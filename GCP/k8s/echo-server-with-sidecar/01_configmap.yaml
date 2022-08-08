@@ -1,0 +1,13 @@
+# https://medium.com/google-cloud/consuming-google-secret-manager-secrets-in-gke-911523207a79
+# HINT: The values of each variable will come from the Deployment
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: entrypoint-generic
+data:
+  entrypoint.sh: |
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo $(gcloud secrets versions access \
+      $(gcloud secrets versions list ${SECRET_NAME} --filter=state=enabled --format="value(name)" --limit=1) \
+      --project=${PROJECT_ID} --secret=${SECRET_NAME}) >> ${RESULT_FILE}

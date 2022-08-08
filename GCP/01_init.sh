@@ -1,11 +1,5 @@
 #!/bin/bash
-# HINT: The line below should be used if you're not using Google Cloud Shell.
-#export PROJECT_ID=$(gcloud config get-value project)
-export PROJECT_ID="${GOOGLE_CLOUD_PROJECT}"
-export GCP_REGION="us-central1"
-export GCP_ZONE="$(gcloud compute zones list --filter=name=${GCP_REGION} --format="value(name)" --limit=1)"
-export SECRET_NAME="facebook-token"
-export CLUSTER_NAME="secret-validate"
+source ./variables.sh
 
 # To be Used both by GKE and Secret Manager
 gcloud config set compute/region "${GCP_REGION}"

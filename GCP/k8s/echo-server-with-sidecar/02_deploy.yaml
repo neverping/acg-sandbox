@@ -1,0 +1,60 @@
+# HINT: Direct apply this will break. Use '02_populate_cluster.sh' script
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: echo-server-sm
+  name: echo-server-sm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-server-sm
+  template:
+    metadata:
+      labels:
+        app: echo-server-sm
+    spec:
+      # BEGIN: retrieve facebook secret
+      initContainers:
+      - name: facebook-token-generator
+        image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+        command: ["/scripts/entrypoint.sh"]
+        volumeMounts:
+        - name: entrypoint-facebook
+          mountPath: /scripts
+        - name: facebook-token
+          mountPath: MY_FACEBOOK_TOKEN_PATH
+        env:
+        - name: PROJECT_ID
+          value: "MY_PROJECT_ID"
+        - name: SECRET_NAME
+          value: "MY_SECRET_NAME"
+        # TODO: Check if we need this var
+        - name: SECRET_VERSION
+          value: "1"
+        - name: RESULT_FILE
+          value: "MY_FACEBOOK_TOKEN_FILE"
+      # END: retrieve facebook secret
+      containers:
+      - name: echo-server-sm
+        image: docker.io/ealen/echo-server:0.7.0
+      # BEGIN: Get secret from init container
+        volumeMounts:
+        - name: facebook-token
+          mountPath: MY_FACEBOOK_TOKEN_PATH
+      # END: Get secret from init container
+      # BEGIN: Service Account general setup
+      serviceAccountName: echo-server-sm
+        nodeSelector:
+          iam.gke.io/gke-metadata-server-enabled: "true"
+      # END: Service Account general setup
+      # BEGIN: Shared volume setup
+      volumes:
+        - name: entrypoint-facebook
+          configMap:
+          name: entrypoint-generic
+          defaultMode: 0755
+        - name: facebook-token
+          emptyDir: {}
+      # END: Shared volume setup
