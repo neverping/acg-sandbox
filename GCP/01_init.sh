@@ -1,5 +1,7 @@
 #!/bin/bash
-source ./variables.sh
+set -euxo pipefail
+
+source ./00_variables.sh
 
 # To be Used both by GKE and Secret Manager
 gcloud config set compute/region "${GCP_REGION}"

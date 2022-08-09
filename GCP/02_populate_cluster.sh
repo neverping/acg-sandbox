@@ -1,5 +1,7 @@
 #!/bin/bash
-source ./variables.sh
+set -euxo pipefail
+
+source ./00_variables.sh
 
 # Do not run this script if you didn't run '01_init.sh' script first!
 kubectl create serviceaccount ${SECRET_MANAGER_SA_NAME} --namespace ${K8S_NAMESPACE}
