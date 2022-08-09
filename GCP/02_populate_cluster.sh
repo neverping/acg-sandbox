@@ -15,7 +15,7 @@ gcloud iam service-accounts create ${SECRET_MANAGER_SA_NAME} --project=${PROJECT
 
 gcloud iam service-accounts add-iam-policy-binding ${SECRET_MANAGER_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com \
     --role roles/iam.workloadIdentityUser \
-    --member "serviceAccount:${PROJECT_ID}.svc.id.goog[NAMESPACE/${K8S_NAMESPACE}]"
+    --member "serviceAccount:${PROJECT_ID}.svc.id.goog[${K8S_NAMESPACE}/${SECRET_MANAGER_SA_NAME}]"
 
 kubectl annotate serviceaccount ${SECRET_MANAGER_SA_NAME} \
     --namespace ${K8S_NAMESPACE} \
