@@ -46,8 +46,8 @@ spec:
       # END: Get secret from init container
       # BEGIN: Service Account general setup
       serviceAccountName: echo-server-sm
-        nodeSelector:
-          iam.gke.io/gke-metadata-server-enabled: "true"
+      nodeSelector:
+        iam.gke.io/gke-metadata-server-enabled: "true"
       # END: Service Account general setup
       # BEGIN: Shared volume setup
       volumes:
