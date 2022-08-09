@@ -27,11 +27,11 @@ kubectl annotate serviceaccount ${SECRET_MANAGER_SA_NAME} \
     --namespace ${K8S_NAMESPACE} \
     iam.gke.io/gcp-service-account=${SECRET_MANAGER_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
 
-# TODO: This should be a Helm.
 if [[ -f ${YAML_BUNDLE} ]]; then
   rm ${YAML_BUNDLE}
 fi
 
+# TODO: This should be a Helm.
 for files in $(ls k8s/echo-server-with-sidecar); do
   echo "---" >> ${YAML_BUNDLE}
   sed \
@@ -42,3 +42,5 @@ for files in $(ls k8s/echo-server-with-sidecar); do
     k8s/echo-server-with-sidecar/${files} >> ${YAML_BUNDLE}
   echo "" >> ${YAML_BUNDLE}
  done
+
+echo "You should now run \"kubectl apply -f ./${YAML_BUNDLE}\" manually."
