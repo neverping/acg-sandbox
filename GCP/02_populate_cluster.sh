@@ -17,6 +17,11 @@ gcloud iam service-accounts add-iam-policy-binding ${SECRET_MANAGER_SA_NAME}@${P
     --role roles/iam.workloadIdentityUser \
     --member "serviceAccount:${PROJECT_ID}.svc.id.goog[${K8S_NAMESPACE}/${SECRET_MANAGER_SA_NAME}]"
 
+# HINT: We allow directly at the RESOURCE level because ACG doesn't allow our USER ACCOUNTS to grant permissions at the PROJECT level.
+gcloud secrets add-iam-policy-binding ${SECRET_NAME} \
+    --member='serviceAccount:${SECRET_MANAGER_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com' \
+    --role='roles/secretmanager.secretAccessor'
+
 kubectl annotate serviceaccount ${SECRET_MANAGER_SA_NAME} \
     --namespace ${K8S_NAMESPACE} \
     iam.gke.io/gcp-service-account=${SECRET_MANAGER_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
