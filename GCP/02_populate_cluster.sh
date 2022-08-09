@@ -30,9 +30,10 @@ fi
 for files in $(ls k8s/echo-server-with-sidecar); do
   echo "---" >> ${YAML_BUNDLE}
   sed \
-    -e "s,MY_FACEBOOK_TOKEN_FILE,${FACEBOOK_TOKEN_FILE},g" \
-    -e "s,MY_FACEBOOK_TOKEN_PATH,${FACEBOOK_TOKEN_PATH},g" \
-    -e "s,MY_PROJECT_ID,${PROJECT_ID},g" \
-    -e "s,MY_SECRET_NAME,${SECRET_NAME},g" \
+    -e "s,MY_FACEBOOK_TOKEN_FILE,${FACEBOOK_TOKEN_FILE}," \
+    -e "s,MY_FACEBOOK_TOKEN_PATH,${FACEBOOK_TOKEN_PATH}," \
+    -e "s,MY_PROJECT_ID,${PROJECT_ID}," \
+    -e "s,MY_SECRET_NAME,${SECRET_NAME}," \
     k8s/echo-server-with-sidecar/${files} >> ${YAML_BUNDLE}
+  echo "" >> ${YAML_BUNDLE}
  done
