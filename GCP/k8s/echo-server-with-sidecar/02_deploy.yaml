@@ -21,7 +21,7 @@ spec:
         image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
         command: ["/scripts/entrypoint.sh"]
         volumeMounts:
-        - name: entrypoint-facebook
+        - name: entrypoint-generic
           mountPath: /scripts
         - name: facebook-token
           mountPath: MY_FACEBOOK_TOKEN_PATH
@@ -30,9 +30,6 @@ spec:
           value: "MY_PROJECT_ID"
         - name: SECRET_NAME
           value: "MY_SECRET_NAME"
-        # TODO: Check if we need this var
-        - name: SECRET_VERSION
-          value: "1"
         - name: RESULT_FILE
           value: "MY_FACEBOOK_TOKEN_FILE"
       # END: retrieve facebook secret
@@ -51,7 +48,7 @@ spec:
       # END: Service Account general setup
       # BEGIN: Shared volume setup
       volumes:
-        - name: entrypoint-facebook
+        - name: entrypoint-generic
           configMap:
             name: entrypoint-generic
             defaultMode: 0755
