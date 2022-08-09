@@ -54,7 +54,6 @@ spec:
         - name: entrypoint-facebook
           configMap:
           name: entrypoint-generic
-          defaultMode: 0755
         - name: facebook-token
           emptyDir: {}
       # END: Shared volume setup
