@@ -34,5 +34,5 @@ for files in $(ls k8s/echo-server-with-sidecar); do
     -e "s,MY_FACEBOOK_TOKEN_PATH,${FACEBOOK_TOKEN_PATH},g" \
     -e "s,MY_PROJECT_ID,${PROJECT_ID},g" \
     -e "s,MY_SECRET_NAME,${SECRET_NAME},g" \
-    k8s/echo-server-with-sidecar/${files} >> yaml_to_apply.yaml
+    k8s/echo-server-with-sidecar/${files} >> ${YAML_BUNDLE}
  done
