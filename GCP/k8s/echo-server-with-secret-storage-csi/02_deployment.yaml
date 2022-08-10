@@ -30,7 +30,7 @@ spec:
       # END: Service Account general setup
       # BEGIN: CSI volume setup
       volumes:
-      - name: mysecret
+      - name: facebook-token
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
