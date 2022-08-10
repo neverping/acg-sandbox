@@ -13,4 +13,4 @@ helm install \
   csi-secrets-store secrets-store-csi-driver/secrets-store-csi-driver
 
 # Based on secrets-store-csi-driver-provider-gcp/deploy/provider-gcp-plugin.yaml on https://github.com/GoogleCloudPlatform/secrets-store-csi-driver-provider-gcp.git
-kubectl apply -f echo-server-with-secret-storage-csi/00_init.yaml
+kubectl apply -f k8s/echo-server-with-secret-storage-csi/00_init.yaml
