@@ -7,9 +7,9 @@ source ./00_variables.sh
 export INIT_CONTAINER="./echo_server_with_initcontainer.yaml"
 export CSI_CONTAINER="./echo_server_with_csi.yaml"
 
-if test -f ${INIT_CONTAINER} && rm ${INIT_CONTAINER}
+test -f ${INIT_CONTAINER} && rm ${INIT_CONTAINER}
 
-if test -f ${CSI_CONTAINER} && rm ${CSI_CONTAINER}
+test -f ${CSI_CONTAINER} && rm ${CSI_CONTAINER}
 
 # TODO: This should be a Helm.
 for files in $(ls k8s/echo-server-with-initcontainer); do
@@ -21,7 +21,7 @@ for files in $(ls k8s/echo-server-with-initcontainer); do
     -e "s,MY_SECRET_NAME,${SECRET_NAME}," \
     k8s/echo-server-with-sidecar/${files} >> ${INIT_CONTAINER}
   echo "" >> ${INIT_CONTAINER}
- done
+done
 
 for files in $(ls k8s/echo-server-with-secret-storage-csi | grep -v 00_init); do
   echo "---" >> ${CSI_CONTAINER}
@@ -32,7 +32,7 @@ for files in $(ls k8s/echo-server-with-secret-storage-csi | grep -v 00_init); do
     -e "s,MY_SECRET_NAME,${SECRET_NAME}," \
     k8s/echo-server-with-sidecar/${files} >> ${CSI_CONTAINER}
   echo "" >> ${CSI_CONTAINER}
- done
+done
 
 echo "You should now run \"kubectl apply -f ${INIT_CONTAINER}\" manually."
 

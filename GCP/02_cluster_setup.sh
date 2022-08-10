@@ -18,8 +18,7 @@ gcloud secrets add-iam-policy-binding ${SECRET_NAME} \
     --member="serviceAccount:${SECRET_MANAGER_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
     --role='roles/secretmanager.secretAccessor'
 
-# HINT: We allow directly at the RESOURCE level because ACG doesn't allow our USER
- ACCOUNTS to grant permissions at the PROJECT level.
+# HINT: We allow directly at the RESOURCE level because ACG doesn't allow our USER ACCOUNTS to grant permissions at the PROJECT level.
 gcloud secrets add-iam-policy-binding ${SECRET_NAME} \
     --member="serviceAccount:${SECRET_MANAGER_SA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
     --role='roles/secretmanager.viewer'
