@@ -43,4 +43,4 @@ for files in $(ls k8s/echo-server-with-sidecar); do
   echo "" >> ${YAML_BUNDLE}
  done
 
-echo "You should now run \"kubectl apply -f ./${YAML_BUNDLE}\" manually."
+echo "You should now run \"kubectl apply -f ${YAML_BUNDLE}\" manually."
