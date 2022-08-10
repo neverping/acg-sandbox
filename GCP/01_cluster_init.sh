@@ -21,4 +21,4 @@ gcloud secrets versions destroy 1 --secret="${SECRET_NAME}"
 
 ## Kubernetes
 echo "We're now about to create the K8s cluster. This might take 10 minutes."
-gcloud container clusters create ${CLUSTER_NAME} --region="${GCP_REGION}" --num-nodes=1 --workload-pool="${PROJECT_ID}.svc.id.goog"
+gcloud container clusters create ${CLUSTER_NAME} --region="${GCP_REGION}" --num-nodes=1 --workload-pool="${K8S_WORKLOAD_POOL}"

@@ -1,4 +1,4 @@
-# HINT: Direct apply this will break. Use '02_populate_cluster.sh' script
+# HINT: Direct apply this will break. Use the shell scripts at the root level of this repository
 apiVersion: apps/v1
 kind: Deployment
 metadata:

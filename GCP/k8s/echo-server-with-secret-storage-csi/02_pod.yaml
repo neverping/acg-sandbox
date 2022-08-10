@@ -1,0 +1,38 @@
+# HINT: Direct apply this will break. Use the shell scripts at the root level of this repository
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: echo-server-csi
+  name: echo-server-csi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-server-csi
+  template:
+    metadata:
+      labels:
+        app: echo-server-csi
+    spec:
+      containers:
+      - name: echo-server-csi
+        image: docker.io/ealen/echo-server:0.7.0
+      # BEGIN: Get secret from csi volume
+        volumeMounts:
+        - name: facebook-token
+          mountPath: MY_FACEBOOK_TOKEN_PATH
+      # END: Get secret from csi volume
+      # BEGIN: Service Account general setup
+      serviceAccountName: echo-server-sm
+      nodeSelector:
+        iam.gke.io/gke-metadata-server-enabled: "true"
+      # END: Service Account general setup
+      # BEGIN: CSI volume setup
+        - name: mysecret
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "MY_SECRET_NAME"
+      # END: CSI volume setup
