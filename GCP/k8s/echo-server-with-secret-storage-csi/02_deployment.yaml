@@ -29,10 +29,11 @@ spec:
         iam.gke.io/gke-metadata-server-enabled: "true"
       # END: Service Account general setup
       # BEGIN: CSI volume setup
-        - name: mysecret
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: "MY_SECRET_NAME"
+      volumes:
+      - name: mysecret
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "MY_SECRET_NAME"
       # END: CSI volume setup
