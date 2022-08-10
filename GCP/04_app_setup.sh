@@ -11,9 +11,9 @@ export INIT_CONTAINER_FILE="./echo_server_with_initcontainer.yaml"
 export CSI_CONTAINER_FILE="./echo_server_with_csi.yaml"
 
 
-test -f ${INIT_CONTAINER} && rm ${INIT_CONTAINER}
+test -f ${INIT_CONTAINER_FILE} && rm ${INIT_CONTAINER_FILE}
 
-test -f ${CSI_CONTAINER} && rm ${CSI_CONTAINER}
+test -f ${CSI_CONTAINER_FILE} && rm ${CSI_CONTAINER_FILE}
 
 # TODO: This should be a Helm.
 for files in $(ls ${INIT_CONTAINER_SRC}); do
