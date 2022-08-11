@@ -1,0 +1,39 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: external-via-gcp-sm
+  namespace: MY_NAMESPACE
+spec:
+  provider:
+    gcpsm:
+      auth:
+        workloadIdentity:
+          clusterLocation: "MY_GCP_REGION"
+          clusterName: "MY_CLUSTER_NAME"
+          clusterProjectID: "MY_PROJECT_ID"
+          serviceAccountRef:
+            name: "MY_SECRET_MANAGER_SA_NAME"
+      projectID: "MY_PROJECT_ID"
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: facebook-token-gcp-sm
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: external-via-gcp-sm
+    kind: SecretStore
+  target:
+    name: facebook-token
+    creationPolicy: Owner
+  data:
+  - secretKey: secret-key-to-be-managed
+    remoteRef:
+      key: provider-key
+      version: provider-key-version
+      property: provider-key-property
+  dataFrom:
+  - extract:
+      key: remote-key-in-the-provider

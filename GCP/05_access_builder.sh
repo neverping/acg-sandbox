@@ -1,5 +1,5 @@
 #!/bin/bash
-# Do not run this script if you didn't run '0[1-4]_*.sh' scripts first!
+# Do not run this script if you didn't run '0[1-5]_*.sh' scripts first!
 set -euo pipefail
 
 source ./00_variables.sh
