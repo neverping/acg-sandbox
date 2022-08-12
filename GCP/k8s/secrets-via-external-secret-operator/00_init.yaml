@@ -22,18 +22,21 @@ metadata:
   name: facebook-token-gcp-sm
 spec:
   refreshInterval: 1h
+  # Needs to be a reference from the resource above
   secretStoreRef:
     name: external-via-gcp-sm
     kind: SecretStore
+  # This will be the Secret resource name within K8s
   target:
     name: facebook-token
     creationPolicy: Owner
   data:
-  - secretKey: secret-key-to-be-managed
+    # the Secret key name for the resource
+  - secretKey: MY_SECRET_NAME
     remoteRef:
-      key: provider-key
-      version: provider-key-version
-      property: provider-key-property
-  dataFrom:
-  - extract:
-      key: remote-key-in-the-provider
+      key: MY_SECRET_NAME
+      #version: provider-key-version
+      #property: provider-key-property
+  #dataFrom:
+  #- extract:
+  #    key: remote-key-in-the-provider
