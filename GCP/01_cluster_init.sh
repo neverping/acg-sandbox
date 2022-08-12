@@ -17,7 +17,7 @@ echo "the-second-version" | gcloud secrets versions add ${SECRET_NAME} --data-fi
 echo "the-third-version" | gcloud secrets versions add ${SECRET_NAME} --data-file=-
 echo "the-fourth-version" | gcloud secrets versions add ${SECRET_NAME} --data-file=-
 gcloud secrets versions disable 4 --secret="${SECRET_NAME}"
-gcloud secrets versions destroy 1 --secret="${SECRET_NAME}"
+gcloud secrets versions destroy 1 --secret="${SECRET_NAME}" --quiet
 
 ## Kubernetes
 echo "We're now about to create the K8s cluster. This might take 10 minutes."
