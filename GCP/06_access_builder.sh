@@ -11,3 +11,4 @@ export CSI_EXTERNAL_IP=$(kubectl get svc echo-server-csi -o=jsonpath='{.status.l
 
 echo "Your request can be done using \"curl 'http://${INIT_EXTERNAL_IP}/?echo_file=/mnt/secret-manager/facebook/facebook-token.txt'\" endpoint."
 echo "Your request can be done using \"curl 'http://${CSI_EXTERNAL_IP}/?echo_file=/mnt/secret-manager/facebook/facebook-token.txt'\" endpoint."
+echo "The secret with External Secrets Operator is: $(kubectl get secrets facebook-token -o jsonpath={.data.facebook-token} | base64 -d)"
