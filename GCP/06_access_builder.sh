@@ -4,6 +4,8 @@ set -euo pipefail
 
 source ./00_variables.sh
 
+echo "Warning: The External Load Balancer might not be ready. Please re-run ${0} in case of errors."
+
 export INIT_EXTERNAL_IP=$(kubectl get svc echo-server-sm -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
 export CSI_EXTERNAL_IP=$(kubectl get svc echo-server-csi -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
 

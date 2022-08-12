@@ -38,6 +38,7 @@ for files in $(ls ${CSI_CONTAINER_SRC} | grep -v 00_init); do
   echo "" >> ${CSI_CONTAINER_FILE}
 done
 
-echo "You should now run \"kubectl apply -f ${INIT_CONTAINER_FILE}\" manually."
+echo "We're about to apply ${INIT_CONTAINER_FILE} and ${CSI_CONTAINER_FILE} files into K8s!"
 
-echo "You should now run \"kubectl apply -f ${CSI_CONTAINER_FILE}\" manually."
+kubectl apply -f ${INIT_CONTAINER_FILE}
+kubectl apply -f ${CSI_CONTAINER_FILE}
