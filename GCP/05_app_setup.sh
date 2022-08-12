@@ -56,9 +56,9 @@ for files in $(ls ${ESO_CONTAINER_SRC}); do
   echo "---" >> ${ESO_CONTAINER_FILE}
   sed \
     -e "s,MY_NAMESPACE,default,g" \
-    -e "s,MY_GCP_REGION,${GCP_REGION},g"
-    -e "s,MY_CLUSTER_NAME,${CLUSTER_NAME},g"
-    -e "s,MY_SECRET_MANAGER_SA_NAME,${SECRET_MANAGER_SA_NAME},g"
+    -e "s,MY_GCP_REGION,${GCP_REGION},g" \
+    -e "s,MY_CLUSTER_NAME,${CLUSTER_NAME},g" \
+    -e "s,MY_SECRET_MANAGER_SA_NAME,${SECRET_MANAGER_SA_NAME},g" \
     -e "s,MY_PROJECT_ID,${PROJECT_ID},g" \
     -e "s,MY_SECRET_NAME,${SECRET_NAME},g" \
     ${ESO_CONTAINER_SRC}/${files} >> ${ESO_CONTAINER_FILE}
