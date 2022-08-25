@@ -22,6 +22,9 @@ test -f ${INIT_CONTAINER_FILE} && rm ${INIT_CONTAINER_FILE}
 
 test -f ${CSI_CONTAINER_FILE} && rm ${CSI_CONTAINER_FILE}
 
+test -f ${ESO_CONTAINER_FILE} && rm ${ESO_CONTAINER_FILE}
+
+
 # TODO: This should be a Helm.
 for files in $(ls ${INIT_CONTAINER_SRC}); do
   echo "---" >> ${INIT_CONTAINER_FILE}
