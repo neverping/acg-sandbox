@@ -13,6 +13,10 @@ export INIT_CONTAINER_FILE="./echo_server_with_initcontainer.yaml"
 export CSI_CONTAINER_FILE="./echo_server_with_csi.yaml"
 export ESO_CONTAINER_FILE="./echo_server_with_eso.yaml"
 
+# Check if the cluster is up before attempting the next steps. Otherwise break this script from executing
+if [[ "RUNNING" != $(gcloud container clusters describe ${CLUSTER_NAME} --region=${GCP_REGION} --format='value(status)') ]]; then
+  exit 1;
+fi
 
 test -f ${INIT_CONTAINER_FILE} && rm ${INIT_CONTAINER_FILE}
 
