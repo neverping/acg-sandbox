@@ -29,10 +29,10 @@ test -f ${ESO_CONTAINER_FILE} && rm ${ESO_CONTAINER_FILE}
 for files in $(ls ${INIT_CONTAINER_SRC}); do
   echo "---" >> ${INIT_CONTAINER_FILE}
   sed \
-    -e "s,MY_FACEBOOK_TOKEN_FILE,${FACEBOOK_TOKEN_FILE}," \
-    -e "s,MY_FACEBOOK_TOKEN_PATH,${FACEBOOK_TOKEN_PATH}," \
-    -e "s,MY_PROJECT_ID,${PROJECT_ID}," \
-    -e "s,MY_SECRET_NAME,${SECRET_NAME}," \
+    -e "s,MY_FACEBOOK_TOKEN_FILE,${FACEBOOK_TOKEN_FILE},g" \
+    -e "s,MY_FACEBOOK_TOKEN_PATH,${FACEBOOK_TOKEN_PATH},g" \
+    -e "s,MY_PROJECT_ID,${PROJECT_ID},g" \
+    -e "s,MY_SECRET_NAME,${SECRET_NAME},g" \
     ${INIT_CONTAINER_SRC}/${files} >> ${INIT_CONTAINER_FILE}
   echo "" >> ${INIT_CONTAINER_FILE}
 done
@@ -46,17 +46,6 @@ for files in $(ls ${CSI_CONTAINER_SRC} | grep -v 00_init); do
     -e "s,MY_SECRET_NAME,${SECRET_NAME},g" \
     ${CSI_CONTAINER_SRC}/${files} >> ${CSI_CONTAINER_FILE}
   echo "" >> ${CSI_CONTAINER_FILE}
-done
-
-for files in $(ls ${INIT_CONTAINER_SRC}); do
-  echo "---" >> ${INIT_CONTAINER_FILE}
-  sed \
-    -e "s,MY_FACEBOOK_TOKEN_FILE,${FACEBOOK_TOKEN_FILE},g" \
-    -e "s,MY_FACEBOOK_TOKEN_PATH,${FACEBOOK_TOKEN_PATH},g" \
-    -e "s,MY_PROJECT_ID,${PROJECT_ID},g" \
-    -e "s,MY_SECRET_NAME,${SECRET_NAME},g" \
-    ${INIT_CONTAINER_SRC}/${files} >> ${INIT_CONTAINER_FILE}
-  echo "" >> ${INIT_CONTAINER_FILE}
 done
 
 for files in $(ls ${ESO_CONTAINER_SRC}); do
