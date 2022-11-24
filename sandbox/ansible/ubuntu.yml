@@ -1,0 +1,12 @@
+- name: Configurations for Ubuntu
+  hosts: ubuntu
+  user: cloud_user
+  become_user: root
+  become: true
+
+  roles:
+    - common
+    - ubuntu
+
+#  vars:
+#    nginx_bin: /usr/sbin/nginx

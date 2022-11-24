@@ -1,0 +1,12 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+- name: Create work directory
+  ansible.builtin.file:
+    state=directory
+    path="{{ project_home_directory }}"
+    owner="{{ user_owner }}"
+    group="{{ group_owner }}"
+    mode=0755
+
+#- name: Locale Gen
+#  ansible.builtin.shell: "locale-gen pt_BR.UTF-8"

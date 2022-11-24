@@ -1,0 +1,20 @@
+---
+## APT trusted gpg keys
+apt_trusted_gpg_store_dir: /etc/apt/trusted.gpg.d
+
+## Docker
+docker_gpg_key: "{{ apt_trusted_gpg_store_dir }}/docker.gpg"
+docker:
+  start: true
+  service_enabled: yes
+  docker_compose_version: 2.13.0
+
+## Kubernetes
+kubernetes_gpg_key: "{{ apt_trusted_gpg_store_dir }}/kubernetes.gpg"
+kubernetes:
+  cli_version: latest
+
+## hashicorp
+hashicorp_gpg_key: "{{ apt_trusted_gpg_store_dir }}/hashicorp.gpg"
+hashicorp:
+  terraform_version: latest
