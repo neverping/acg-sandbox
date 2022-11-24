@@ -1,0 +1,4 @@
+- import_tasks: "./apt.yml"
+- import_tasks: "./docker.yml"
+- import_tasks: "./kubernetes.yml"
+- import_tasks: "./hashicorp.yml"

@@ -1,0 +1,61 @@
+---
+# HINT: curl -s https://download.docker.com/linux/ubuntu/gpg | gpg --armor
+# pub   rsa4096 2017-02-22 [SCEA]
+#       9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+# uid           Docker Release (CE deb) <docker@docker.com>
+# sub   rsa4096 2017-02-22 [S]
+
+- name: Installing Docker apt-key
+  ansible.builtin.apt_key:
+    state: present
+    id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
+    url: https://download.docker.com/linux/ubuntu/gpg
+    keyring: "{{ docker_gpg_key }}"
+
+
+- name: Add Docker Debian repository
+  ansible.builtin.apt_repository: 
+    repo: "deb [arch=amd64 signed-by={{ docker_gpg_key }}] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+    update_cache: yes
+    filename: "docker.list"
+
+- name: Install Docker packages
+  apt: 
+    pkg: ["linux-image-extra-virtual", "docker-ce", "docker-ce-cli", "containerd.io", "docker-compose-plugin"]
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime }}"
+
+- name: Create unix Docker group
+  group:
+    name: docker
+    state: present
+
+- name: Add {{ user_owner }} user to unix Docker group
+  user:
+    name: "{{ user_owner }}"
+    groups: docker
+    append: yes
+
+- name: "Ensure Docker is {{ docker.start | ternary('started','stopped') }}"
+  service: 
+    name: docker 
+    state: "{{ docker.start | ternary('restarted','stopped') }}"
+    enabled: "{{ docker.service_enabled }}"
+
+- name: Install docker-compose {{ docker.docker_compose_version }}
+  get_url: 
+    url: "https://github.com/docker/compose/releases/download/v{{ docker.docker_compose_version }}/docker-compose-linux-x86_64" 
+    dest: /usr/local/bin/docker-compose
+    force: no
+    mode: 0755
+
+- name: Add DOCKER_BUILDKIT env var to {{ user_owner }}
+  blockinfile:
+    dest: "/home/{{ user_owner }}/.bashrc"
+    block: |
+      export DOCKER_BUILDKIT=1
+    marker: '# {mark} ANSIBLE MANAGED BLOCK - buildkit'
+    insertbefore: BOF
+    create: yes 

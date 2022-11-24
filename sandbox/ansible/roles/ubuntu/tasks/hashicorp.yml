@@ -1,0 +1,27 @@
+---
+# HINT: curl -s https://apt.releases.hashicorp.com/gpg | gpg --armor
+# pub   rsa4096 2020-05-07 [SC]
+#       E8A032E094D8EB4EA189D270DA418C88A3219F7B
+# uid           HashiCorp Security (HashiCorp Package Signing) <security+packaging@hashicorp.com>
+# sub   rsa4096 2020-05-07 [E]
+
+- name: Installing HashiCorp keyring
+  ansible.builtin.apt_key:
+    state: present
+    id: "E8A032E094D8EB4EA189D270DA418C88A3219F7B"
+    url: https://apt.releases.hashicorp.com/gpg
+    keyring: "{{ hashicorp_gpg_key }}"
+
+- name: Add HashiCorp repository
+  ansible.builtin.apt_repository: 
+    repo: "deb [signed-by={{ hashicorp_gpg_key }}] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: yes
+    filename: "hashicorp.list"
+
+- name: Install Terraform package
+  apt: 
+    pkg: ["terraform"]
+    state: "{{ hashicorp.terraform_version }}"
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime }}"
