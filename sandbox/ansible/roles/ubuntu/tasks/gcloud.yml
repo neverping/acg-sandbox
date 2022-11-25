@@ -2,14 +2,14 @@
 # HINT: You need to execute 'kubernetes.yml' because it imports the same keyring that this repository needs.
 
 - name: Add GCP Debian repository
-  ansible.builtin.apt_repository: 
+  ansible.builtin.apt_repository:
     repo: "deb [arch=amd64 signed-by={{ kubernetes_gpg_key }}] https://packages.cloud.google.com/apt cloud-sdk main"
     state: present
     update_cache: yes
     filename: "google-cloud-platform.list"
 
-- name: Install Kubectl package
-  apt: 
+- name: Install google-cloud-cli package
+  apt:
     pkg: ["google-cloud-cli"]
     state: latest
     update_cache: yes

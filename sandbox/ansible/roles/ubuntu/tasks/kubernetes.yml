@@ -29,3 +29,20 @@
     state: "{{ kubernetes.cli_version }}"
     update_cache: yes
     cache_valid_time: "{{ aptcachetime }}"
+
+- name: "Install k3d binary on {{ kubernetes.k3d_version }} release"
+  ansible.builtin.get_url:
+    url: "https://github.com/k3d-io/k3d/releases/download/v{{ kubernetes.k3d_version }}/k3d-linux-amd64"
+    dest: "/usr/local/bin/k3d"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+# HINT: It's better to always install the latest release because it is always improving
+- name: "Install skaffold binary on latest release"
+  ansible.builtin.get_url:
+    url: "https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64"
+    dest: "/usr/local/bin/skaffold"
+    owner: "root"
+    group: "root"
+    mode: "0755"
