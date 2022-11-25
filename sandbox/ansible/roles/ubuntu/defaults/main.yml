@@ -13,6 +13,7 @@ docker:
 kubernetes_gpg_key: "{{ apt_trusted_gpg_store_dir }}/kubernetes.gpg"
 kubernetes:
   cli_version: latest
+  k3d_version: 5.4.6
 
 ## hashicorp
 hashicorp_gpg_key: "{{ apt_trusted_gpg_store_dir }}/hashicorp.gpg"
