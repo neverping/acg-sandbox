@@ -1,5 +1,5 @@
 #!/bin/bash
-# HINT: The line below should be used if you're not using Google Cloud Shell.
+# HINT: The line below should be used if you're using Google Cloud Shell.
 export PROJECT_ID="${GOOGLE_CLOUD_PROJECT}"
 export GCP_REGION="us-central1"
 export GCP_ZONE="$(gcloud compute zones list --filter=name=${GCP_REGION} --format="value(name)" --limit=1)"
