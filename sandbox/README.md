@@ -5,7 +5,7 @@
 
 ```bash
 export ANSIBLE_PASSWD="your_remote_host_password"
-```bash
+```
 
 And then you can run the playbook. There's a fixed host entry.
 
