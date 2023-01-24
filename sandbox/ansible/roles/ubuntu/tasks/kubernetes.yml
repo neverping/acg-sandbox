@@ -1,18 +1,14 @@
 ---
 # HINT: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --armor
-# pub   rsa2048 2021-03-01 [SC] [expires: 2023-03-02]
-#       7F92E05B31093BEF5A3C2D38FEEA9169307EA071
-# uid           Rapture Automatic Signing Key (cloud-rapture-signing-key-2021-03-01-08_01_09.pub)
-# sub   rsa2048 2021-03-01 [E]
-# pub   rsa2048 2020-12-04 [SC] [expires: 2022-12-04]
-#       59FE0256827269DC81578F928B57C5C2836F4BEB
-# uid           gLinux Rapture Automatic Signing Key (//depot/google3/production/borg/cloud-rapture/keys/cloud-rapture-pubkeys/cloud-rapture-signing-key-2020-12-03-16_08_05.pub) <glinux-team@google.com>
-# sub   rsa2048 2020-12-04 [E]
+# pub   rsa2048 2022-05-21 [SC]
+#       A362B822F6DEDC652817EA46B53DC80D13EDEF05
+# uid           Rapture Automatic Signing Key (cloud-rapture-signing-key-2022-03-07-08_01_01.pub)
+# sub   rsa2048 2022-05-21 [E]
 
 - name: Installing GCP keyring
   ansible.builtin.apt_key:
     state: present
-    id: "7F92E05B31093BEF5A3C2D38FEEA9169307EA071"
+    id: "A362B822F6DEDC652817EA46B53DC80D13EDEF05"
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     keyring: "{{ kubernetes_gpg_key }}"
 
