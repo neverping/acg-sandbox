@@ -1,14 +1,14 @@
 ---
 # HINT: curl -s https://apt.releases.hashicorp.com/gpg | gpg --armor
-# pub   rsa4096 2020-05-07 [SC]
-#       E8A032E094D8EB4EA189D270DA418C88A3219F7B
+# pub   rsa4096 2023-01-10 [SC] [expires: 2028-01-09]
+#       798AEC654E5C15428C8E42EEAA16FCBCA621E701
 # uid           HashiCorp Security (HashiCorp Package Signing) <security+packaging@hashicorp.com>
-# sub   rsa4096 2020-05-07 [E]
+# sub   rsa4096 2023-01-10 [S] [expires: 2028-01-09]
 
 - name: Installing HashiCorp keyring
   ansible.builtin.apt_key:
     state: present
-    id: "E8A032E094D8EB4EA189D270DA418C88A3219F7B"
+    id: "798AEC654E5C15428C8E42EEAA16FCBCA621E701"
     url: https://apt.releases.hashicorp.com/gpg
     keyring: "{{ hashicorp_gpg_key }}"
 
