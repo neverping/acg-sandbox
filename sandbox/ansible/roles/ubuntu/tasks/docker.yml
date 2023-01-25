@@ -22,7 +22,7 @@
 
 - name: Install Docker packages
   apt: 
-    pkg: ["linux-image-extra-virtual", "docker-ce", "docker-ce-cli", "containerd.io", "docker-compose-plugin"]
+    pkg: ["docker-ce", "docker-ce-cli", "containerd.io", "docker-compose-plugin"]
     state: latest
     update_cache: yes
     cache_valid_time: "{{ aptcachetime }}"
