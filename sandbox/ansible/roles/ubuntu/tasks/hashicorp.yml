@@ -14,10 +14,10 @@
 
 - name: Add HashiCorp repository
   ansible.builtin.apt_repository: 
-    repo: "deb [signed-by={{ hashicorp_gpg_key }}] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+    repo: "deb [arch={{ deb_architecture[ansible_architecture] }} signed-by={{ hashicorp_gpg_key }}] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
     state: present
     update_cache: yes
-    filename: "hashicorp.list"
+    filename: "hashicorp"
 
 - name: Install Terraform package
   apt: 

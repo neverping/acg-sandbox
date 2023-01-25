@@ -3,10 +3,10 @@
 
 - name: Add GCP Debian repository
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by={{ kubernetes_gpg_key }}] https://packages.cloud.google.com/apt cloud-sdk main"
+    repo: "deb [arch={{ deb_architecture[ansible_architecture] }} signed-by={{ kubernetes_gpg_key }}] https://packages.cloud.google.com/apt cloud-sdk main"
     state: present
     update_cache: yes
-    filename: "google-cloud-platform.list"
+    filename: "google-cloud-platform"
 
 - name: Install google-cloud-cli package
   apt:
