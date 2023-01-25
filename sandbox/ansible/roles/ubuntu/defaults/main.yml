@@ -2,6 +2,12 @@
 ## APT trusted gpg keys
 apt_trusted_gpg_store_dir: /etc/apt/trusted.gpg.d
 
+## Used on apt repo setup
+deb_architecture: {
+  "aarch64": "arm64",
+  "x86_64": "amd64"
+}
+
 ## Docker
 docker_gpg_key: "{{ apt_trusted_gpg_store_dir }}/docker.gpg"
 docker:
@@ -19,3 +25,6 @@ kubernetes:
 hashicorp_gpg_key: "{{ apt_trusted_gpg_store_dir }}/hashicorp.gpg"
 hashicorp:
   terraform_version: latest
+
+## Helm
+helm_gpg_key: "{{ apt_trusted_gpg_store_dir }}/helm.gpg"

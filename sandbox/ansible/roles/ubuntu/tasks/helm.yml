@@ -1,0 +1,27 @@
+---
+# HINT: curl -s https://baltocdn.com/helm/signing.asc | gpg --armor | sed 's,^,# ,g'
+# pub   rsa4096 2020-05-06 [SCEA] [expires: 2030-05-04]
+#       81BF832E2F19CD2AA0471959294AC4827C1A168A
+# uid           Helm hosted by Balto (Repository signing) <gpgsecurity@getbalto.com>
+
+- name: Installing Helm keyring
+  ansible.builtin.apt_key:
+    state: present
+    id: "81BF832E2F19CD2AA0471959294AC4827C1A168A"
+    url: https://baltocdn.com/helm/signing.asc
+    keyring: "{{ helm_gpg_key }}"
+
+- name: Add Helm Debian repository
+  ansible.builtin.apt_repository: 
+    repo: "deb [arch={{ deb_architecture[ansible_architecture] }} signed-by={{ helm_gpg_key }}] https://baltocdn.com/helm/stable/debian/ all main"
+    state: present
+    update_cache: yes
+    filename: "helm"
+
+- name: Install Helm package
+  apt: 
+    pkg: ["helm"]
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime }}"
+
