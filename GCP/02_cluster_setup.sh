@@ -5,7 +5,7 @@ set -euo pipefail
 source ./00_variables.sh
 
 # We need the new GKE auth plugin installed on clusters 1.21 and newer.
-gcloud components install gke-gcloud-auth-plugin
+#gcloud components install gke-gcloud-auth-plugin
 
 
 # Check if the cluster is up before attempting the next steps. Otherwise break this script from executing
