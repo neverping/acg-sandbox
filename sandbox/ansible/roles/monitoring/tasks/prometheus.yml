@@ -1,0 +1,21 @@
+---
+- name: "Decompress Prometheus {{ prometheus.version }} release from GitHub"
+  ansible.builtin.unarchive:
+    src: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus.version }}/prometheus-{{ prometheus.version }}.linux-{{ deb_architecture[ansible_architecture] }}.tar.gz"
+    dest: "/opt/"
+    owner: "{{ user_owner }}"
+    group: "{{ group_owner }}"
+    mode: 0755
+    remote_src: yes
+
+- name: "Assign Prometheus {{ prometheus.version }} release as current release"
+  ansible.builtin.file:
+    src: "/opt/prometheus-{{ prometheus.version }}.linux-{{ deb_architecture[ansible_architecture] }}"
+    dest: "{{ prometheus.dir_prefix }}"
+    owner: "{{ user_owner }}"
+    group: "{{ group_owner }}"
+    state: link
+
+# Continue reading here
+# https://www.cherryservers.com/blog/install-prometheus-ubuntu
+# https://github.com/in4it/prometheus-course/tree/master/scripts

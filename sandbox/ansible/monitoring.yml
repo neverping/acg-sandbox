@@ -1,0 +1,13 @@
+- name: Configurations for Monitoring
+  hosts: monitoring
+  user: cloud_user
+  become_user: root
+  become: true
+
+  roles:
+#    - common
+#    - ubuntu
+    - monitoring
+
+#  vars:
+#    nginx_bin: /usr/sbin/nginx

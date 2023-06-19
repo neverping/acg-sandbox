@@ -1,0 +1,14 @@
+---
+
+## TODO: The new LTS release will be 2.45.
+## at the current moment, we just have the RC.
+## Use the LTS from above when it's released.
+prometheus:
+  version: 2.45.0-rc.0
+  dir_prefix: /opt/prometheus
+
+## Used on apt repo setup and downloading artifacts from GitHub.
+deb_architecture: {
+  "aarch64": "arm64",
+  "x86_64": "amd64"
+}
