@@ -20,7 +20,7 @@ apt_trusted_gpg_store_dir: /etc/apt/trusted.gpg.d
 
 grafana:
   gpg_key: "{{ apt_trusted_gpg_store_dir }}/grafana.gpg"
-  version: 55.22
+  version: 10.0.0
 
 ## Used by GitHub releases.
 deb_architecture: {
