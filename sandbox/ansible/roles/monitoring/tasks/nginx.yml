@@ -1,0 +1,29 @@
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime }}"
+
+- name: Allow all access to tcp port 80
+  ufw:
+    rule: allow
+    port: 80
+    proto: tcp
+
+  - name: Enabling and starting nginx
+  ansible.builtin.systemd:
+    name: nginx.service
+    state: started
+    enabled: yes
+    daemon_reload: true
+
+- name: Placing nginx VHost file
+  ansible.builtin.template:
+    src: monitoring.j2
+    dest: /etc/nginx/sites-available/monitoring
+    owner: root 
+    group: root
+    mode: 0644
+  notify:
+  - reload nginx
