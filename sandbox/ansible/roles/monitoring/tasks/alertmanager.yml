@@ -1,0 +1,96 @@
+---
+- name: "Add group {{ alertmanager.user_settings.group }}, with GID as {{ alertmanager.user_settings.gid }}, as a system group"  
+  ansible.builtin.group:
+    name: "{{ alertmanager.user_settings.group }}"
+    gid: "{{ alertmanager.user_settings.gid }}"
+    system: true
+
+- name: "Add user {{ alertmanager.user_settings.user }}, with UID/Group as {{ alertmanager.user_settings.uid }}/{{ prometheus.user_settings.group }} as system user"  
+  ansible.builtin.user:
+    name: "{{ alertmanager.user_settings.user }}"
+    comment: "AlertManager service"
+    uid: "{{ alertmanager.user_settings.uid }}"
+    group: "{{ alertmanager.user_settings.group }}"
+    create_home: false
+    shell: /usr/bin/false
+    system: true
+
+- name: "Decompress AlertManager {{ alertmanager.version }} release from GitHub"
+  ansible.builtin.unarchive:
+    src: "https://github.com/prometheus/alertmanager/releases/download/v{{ alertmanager.version }}/alertmanager-{{ alertmanager.version }}.linux-{{ deb_architecture[ansible_architecture] }}.tar.gz"
+    dest: "/opt/"
+    owner: "{{ alertmanager.user_settings.user }}"
+    group: "{{ alertmanager.user_settings.group }}"
+    mode: 0755
+    remote_src: yes
+
+- name: "Assign AlertManager {{ alertmanager.version }} release as current AlertManager"
+  ansible.builtin.file:
+    src: "{{ alertmanager_release_dir }}"
+    dest: "{{ alertmanager.working_dir }}"
+    owner: "{{ alertmanager.user_settings.user }}"
+    group: "{{ alertmanager.user_settings.group }}"
+    state: link
+
+- name: "Create multiple default AlertManager directories"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ alertmanager.user_settings.user }}"
+    group: "{{ alertmanager.user_settings.group }}"
+    mode: 0775
+  loop:
+    - "{{ alertmanager.var_dir }}"
+    - "{{ alertmanager.cfg_dir }}"
+
+- name: "Symlink AlertManager binaries from {{ alertmanager.working_dir }}"
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ alertmanager.user_settings.user }}"
+    group: "{{ alertmanager.user_settings.group }}"
+    state: link
+  with_items:
+    - { src: "{{ alertmanager.working_dir }}/alertmanager", dest: "{{ alertmanager.bin_dir }}/alertmanager" }
+    - { src: "{{ alertmanager.working_dir }}/amtool", dest: "{{ alertmanager.bin_dir }}/amtool" }
+
+- name: Placing AlertManager config file
+  ansible.builtin.template:
+    src: alertmanager.yml.j2
+    dest: "{{ alertmanager_cfg_file }}"
+    owner: root 
+    group: root
+    mode: 0644
+  notify:
+  - reload alertmanager
+
+- name: Placing AlertManager systemd init file
+  ansible.builtin.template:
+    src: alertmanager.systemd.j2
+    dest: /etc/systemd/system/alertmanager.service
+    owner: root 
+    group: root
+    mode: 0644
+  notify:
+  - restart alertmanager
+
+- name: Enabling and starting AlertManager
+  ansible.builtin.systemd:
+    name: alertmanager
+    state: started
+    enabled: yes
+    daemon_reload: true
+
+- name: "Allow access to tcp port {{ alertmanager.port }} locally"
+  ufw:
+    rule: allow
+    port: "{{ alertmanager.port }}"
+    proto: tcp
+    src: "{{ item }}"
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
+# Continue reading here
+# https://github.com/in4it/prometheus-course/tree/master/scripts

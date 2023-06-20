@@ -1,5 +1,5 @@
 [Unit]
-Description=Prometheus
+Description=AlertManager
 After=syslog.target network.target
 
 [Service]
@@ -11,14 +11,12 @@ Type=simple
 #Environment="SOMETHING=value"
 #Environment="ANOTHER=value2"
 GuessMainPID=True
-User={{ prometheus.user_settings.user }}
-Group={{ prometheus.user_settings.group }}
-WorkingDirectory={{ prometheus.working_dir }}
-ExecStart={{ prometheus.bin_dir }}/prometheus \
-    --config.file {{ prometheus.cfg_dir }}/prometheus.yml \
-    --storage.tsdb.path {{ prometheus.var_dir }} \
-    --web.console.templates={{ prometheus.cfg_dir }}/consoles \
-    --web.console.libraries={{ prometheus.cfg_dir }}/console_libraries
+User={{ alertmanager.user_settings.user }}
+Group={{ alertmanager.user_settings.group }}
+WorkingDirectory={{ alertmanager.working_dir }}
+ExecStart={{ alertmanager.bin_dir }}/alertmanager \
+    --config.file {{ alertmanager_cfg_file }} \
+    --storage.path {{ alertmanager.var_dir }}
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStop=/bin/kill -9 $MAINPID
 TimeoutSec=5

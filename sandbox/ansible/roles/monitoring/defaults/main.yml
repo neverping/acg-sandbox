@@ -16,6 +16,24 @@ prometheus:
     uid: 1080
     gid: 1080
 
+alertmanager:
+  version: 0.25.0
+  working_dir: /opt/alertmanager
+  var_dir: /var/lib/alertmanager
+  bin_dir: /usr/local/bin
+  cfg_dir: /etc/alertmanager
+  port: 9093
+  user_settings:
+    user: alertmanager
+    group: alertmanager
+    uid: 1081
+    gid: 1081
+
+prometheus_release_dir: "/opt/prometheus-{{ prometheus.version }}.linux-{{ deb_architecture[ansible_architecture] }}"
+alertmanager_release_dir: "/opt/alertmanager-{{ alertmanager.version }}.linux-{{ deb_architecture[ansible_architecture] }}"
+
+alertmanager_cfg_file: "{{ alertmanager.cfg_dir }}/alertmanager.yml"
+
 apt_trusted_gpg_store_dir: /etc/apt/trusted.gpg.d
 
 grafana:
@@ -28,6 +46,3 @@ deb_architecture: {
   "aarch64": "arm64",
   "x86_64": "amd64"
 }
-
-# 
-prometheus_release_dir: "/opt/prometheus-{{ prometheus.version }}.linux-{{ deb_architecture[ansible_architecture] }}"

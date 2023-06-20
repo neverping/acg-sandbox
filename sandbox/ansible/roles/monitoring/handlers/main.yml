@@ -9,6 +9,30 @@
     daemon_reload: yes
     enabled: yes
 
+- name: Systemd reload prometheus
+  listen: "reload prometheus"
+  ansible.builtin.systemd:
+    name: prometheus
+    state: reloaded
+    daemon_reload: yes
+    enabled: yes
+
+- name: Systemd restart alertmanager
+  listen: "restart alertmanager"
+  ansible.builtin.systemd:
+    name: alertmanager
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+
+- name: Systemd reload alertmanager
+  listen: "reload alertmanager"
+  ansible.builtin.systemd:
+    name: alertmanager
+    state: reloaded
+    daemon_reload: yes
+    enabled: yes
+
 - name: Systemd restart nginx
   listen: "reload nginx"
   ansible.builtin.systemd:
