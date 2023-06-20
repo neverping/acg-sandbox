@@ -20,8 +20,8 @@
     filename: "grafana"
 
 - name: "Install Grafana on version {{ grafana.version }}"
-  apt: 
-    pkg: ["grafana"]
-    state: "{{ grafana.version }}"
+  apt:
+    name: "grafana={{ grafana.version }}"
+    state: present
     update_cache: yes
     cache_valid_time: "{{ aptcachetime }}"
