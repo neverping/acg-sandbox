@@ -5,7 +5,15 @@
 ## Use the LTS release without "rc" once it goes out.
 prometheus:
   version: 2.45.0-rc.0
-  dir_prefix: /opt/prometheus
+  working_dir: /opt/prometheus
+  var_dir: /var/lib/prometheus
+  bin_dir: /usr/local/bin
+  cfg_dir: /etc/prometheus
+  user_settings:
+    user: prometheus
+    group: prometheus
+    uid: 1080
+    gid: 1080
 
 ## Used by GitHub releases.
 deb_architecture: {

@@ -1,21 +1,66 @@
 ---
+- name: Add user "{{ prometheus.user_settings.user }}", with UID/Group as {{ prometheus.user_settings.uid }}/{{ prometheus.user_settings.group }} as system user"  
+  ansible.builtin.user:
+    name: "{{ prometheus.user_settings.user }}"
+    comment: "Prometheus service"
+    uid: "{{ prometheus.user_settings.uid }}"
+    group: "{{ prometheus.user_settings.group }}"
+    create_home: false
+    shell: /usr/bin/false
+    system: true
+
+
 - name: "Decompress Prometheus {{ prometheus.version }} release from GitHub"
   ansible.builtin.unarchive:
     src: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus.version }}/prometheus-{{ prometheus.version }}.linux-{{ deb_architecture[ansible_architecture] }}.tar.gz"
     dest: "/opt/"
-    owner: "{{ user_owner }}"
-    group: "{{ group_owner }}"
+    owner: "{{ prometheus.user_settings.user }}"
+    group: "{{ prometheus.user_settings.group }}"
     mode: 0755
     remote_src: yes
 
-- name: "Assign Prometheus {{ prometheus.version }} release as current release"
+- name: "Assign Prometheus {{ prometheus.version }} release as current Prometheus"
   ansible.builtin.file:
-    #src: "/opt/prometheus-{{ prometheus.version }}.linux-{{ deb_architecture[ansible_architecture] }}"
     src: "{{ prometheus_release_dir }}"
-    dest: "{{ prometheus.dir_prefix }}"
-    owner: "{{ user_owner }}"
-    group: "{{ group_owner }}"
+    dest: "{{ prometheus.working_dir }}"
+    owner: "{{ prometheus.user_settings.user }}"
+    group: "{{ prometheus.user_settings.group }}"
     state: link
+
+- name: "Create multiple default directories"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ prometheus.user_settings.user }}"
+    group: "{{ prometheus.user_settings.group }}"
+    mode: 0775
+  loop:
+    - "{{ prometheus.var_dir }}"
+    - "{{ prometheus.cfg_dir }}"
+
+- name: "Symlink Prometheus binaries from {{ prometheus.working_dir }}"
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+    owner: "{{ prometheus.user_settings.user }}"
+    group: "{{ prometheus.user_settings.group }}"
+  with_items:
+    - { src: "{{ prometheus.working_dir }}/prometheus", dest: "{{ prometheus.bin_dir }}/prometheus" }
+    - { src: "{{ prometheus.working_dir }}/promtool", dest: "{{ prometheus.bin_dir }}/promtool" }
+
+- name: "Symlink Prometheus directories from {{ prometheus.working_dir }}"
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+    owner: "{{ prometheus.user_settings.user }}"
+    group: "{{ prometheus.user_settings.group }}"
+  with_items:
+    - { src: "{{ prometheus.working_dir }}/consoles", dest: "{{ prometheus.cfg_dir }}/consoles" }
+    - { src: "{{ prometheus.working_dir }}/console_libraries", dest: "{{ prometheus.cfg_dir }}/console_libraries" }
+    - { src: "{{ prometheus.working_dir }}/prometheus.yml", dest: "{{ prometheus.cfg_dir }}/prometheus.yml" }
+
 
 # Continue reading here
 # https://www.cherryservers.com/blog/install-prometheus-ubuntu
