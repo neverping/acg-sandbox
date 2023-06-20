@@ -48,9 +48,9 @@
   file:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    state: link
     owner: "{{ prometheus.user_settings.user }}"
     group: "{{ prometheus.user_settings.group }}"
+    state: link
   with_items:
     - { src: "{{ prometheus.working_dir }}/prometheus", dest: "{{ prometheus.bin_dir }}/prometheus" }
     - { src: "{{ prometheus.working_dir }}/promtool", dest: "{{ prometheus.bin_dir }}/promtool" }
@@ -59,14 +59,37 @@
   file:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    state: link
     owner: "{{ prometheus.user_settings.user }}"
     group: "{{ prometheus.user_settings.group }}"
+    state: link
   with_items:
     - { src: "{{ prometheus.working_dir }}/consoles", dest: "{{ prometheus.cfg_dir }}/consoles" }
     - { src: "{{ prometheus.working_dir }}/console_libraries", dest: "{{ prometheus.cfg_dir }}/console_libraries" }
     - { src: "{{ prometheus.working_dir }}/prometheus.yml", dest: "{{ prometheus.cfg_dir }}/prometheus.yml" }
 
+
+- name: Placing Prometheus systemd init file
+  ansible.builtin.template:
+    src: prometheus.systemd.j2
+    dest: /etc/systemd/system/prometheus.service
+    owner: root 
+    group: root
+    mode: 0644
+  notify:
+  - restart prometheus
+
+- name: Enabling and starting Prometheus
+  ansible.builtin.systemd:
+    name: prometheus
+    state: started
+    enabled: yes
+    daemon_reload: true
+
+- name: "Allow all access to tcp port {{ prometheus.port }}"
+  ufw:
+    rule: allow
+    port: "{{ prometheus.port }}"
+    proto: tcp
 
 # Continue reading here
 # https://www.cherryservers.com/blog/install-prometheus-ubuntu

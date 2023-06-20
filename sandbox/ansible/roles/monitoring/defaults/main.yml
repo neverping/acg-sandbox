@@ -9,6 +9,7 @@ prometheus:
   var_dir: /var/lib/prometheus
   bin_dir: /usr/local/bin
   cfg_dir: /etc/prometheus
+  port: 9090
   user_settings:
     user: prometheus
     group: prometheus

@@ -1,0 +1,10 @@
+---
+# Handler to handle restart notifications
+
+- name: Systemd restart prometheus
+  listen: "restart prometheus"
+  ansible.builtin.systemd:
+    name: prometheus
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
