@@ -1,0 +1,23 @@
+---
+
+## TODO: The new LTS release will be 2.45.
+## At the current stage, it's the RC.
+## Use the LTS release without "rc" once it goes out.
+node_exporter:
+  version: 1.6.0
+  working_dir: /opt/node_exporter
+  bin_dir: /usr/local/bin
+  port: 9100
+  user_settings:
+    user: node_exporter
+    group: node_exporter
+    uid: 1082
+    gid: 1082
+
+node_exporter_release_dir: "/opt/node_exporter-{{ node_exporter.version }}.linux-{{ deb_architecture[ansible_architecture] }}"
+
+## Used by GitHub releases.
+deb_architecture: {
+  "aarch64": "arm64",
+  "x86_64": "amd64"
+}

@@ -1,0 +1,71 @@
+---
+- name: "Add group {{ node_exporter.user_settings.group }}, with GID as {{ node_exporter.user_settings.gid }}, as a system group"  
+  ansible.builtin.group:
+    name: "{{ node_exporter.user_settings.group }}"
+    gid: "{{ node_exporter.user_settings.gid }}"
+    system: true
+
+- name: "Add user {{ node_exporter.user_settings.user }}, with UID/Group as {{ node_exporter.user_settings.uid }}/{{ node_exporter.user_settings.group }} as system user"  
+  ansible.builtin.user:
+    name: "{{ node_exporter.user_settings.user }}"
+    comment: "Node Exporter service"
+    uid: "{{ node_exporter.user_settings.uid }}"
+    group: "{{ node_exporter.user_settings.group }}"
+    create_home: false
+    shell: /usr/bin/false
+    system: true
+
+
+- name: "Decompress node_exporter {{ node_exporter.version }} release from GitHub"
+  ansible.builtin.unarchive:
+    src: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter.version }}/node_exporter-{{ node_exporter.version }}.linux-{{ deb_architecture[ansible_architecture] }}.tar.gz"
+    dest: "/opt/"
+    owner: "{{ node_exporter.user_settings.user }}"
+    group: "{{ node_exporter.user_settings.group }}"
+    mode: 0755
+    remote_src: yes
+
+- name: "Assign node_exporter {{ node_exporter.version }} release as current node_exporter"
+  ansible.builtin.file:
+    src: "{{ node_exporter_release_dir }}"
+    dest: "{{ node_exporter.working_dir }}"
+    owner: "{{ node_exporter.user_settings.user }}"
+    group: "{{ node_exporter.user_settings.group }}"
+    state: link
+
+
+- name: "Symlink Node Exporter binaries from {{ node_exporter.working_dir }}"
+  file:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ node_exporter.user_settings.user }}"
+    group: "{{ node_exporter.user_settings.group }}"
+    state: link
+  with_items:
+    - { src: "{{ node_exporter.working_dir }}/node_exporter", dest: "{{ node_exporter.bin_dir }}/node_exporter" }
+
+- name: Placing node_exporter systemd init file
+  ansible.builtin.template:
+    src: node_exporter.systemd.j2
+    dest: /etc/systemd/system/node_exporter.service
+    owner: root 
+    group: root
+    mode: 0644
+  notify:
+  - restart node_exporter
+
+- name: Enabling and starting node_exporter
+  ansible.builtin.systemd:
+    name: node_exporter
+    state: started
+    enabled: yes
+    daemon_reload: true
+
+- name: "Allow access to tcp port {{ node_exporter.port }} everywhere"
+  ufw:
+    rule: allow
+    port: "{{ node_exporter.port }}"
+    proto: tcp
+
+# Continue reading here
+# https://github.com/in4it/prometheus-course/tree/master/scripts

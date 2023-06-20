@@ -1,0 +1,23 @@
+[Unit]
+Description=node_exporter
+After=syslog.target network.target
+
+[Service]
+Type=simple
+# Systemd clears ANY environment configuration, so you need to set it over here again.
+# NOTE: using EnvironmentFile will not work because:
+# 1- systemd does not accept 'export FOO=bar'
+# 2- Python does not have access to a instance var (example: FOO=bar)
+#Environment="SOMETHING=value"
+#Environment="ANOTHER=value2"
+GuessMainPID=True
+User={{ node_exporter.user_settings.user }}
+Group={{ node_exporter.user_settings.group }}
+WorkingDirectory={{ node_exporter.working_dir }}
+ExecStart={{ node_exporter.bin_dir }}/node_exporter
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -9 $MAINPID
+TimeoutSec=5
+
+[Install]
+WantedBy=multi-user.target
