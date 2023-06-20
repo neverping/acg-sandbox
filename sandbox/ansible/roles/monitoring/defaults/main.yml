@@ -21,6 +21,7 @@ apt_trusted_gpg_store_dir: /etc/apt/trusted.gpg.d
 grafana:
   gpg_key: "{{ apt_trusted_gpg_store_dir }}/grafana.gpg"
   version: 10.0.0
+  port: 3000
 
 ## Used by GitHub releases.
 deb_architecture: {

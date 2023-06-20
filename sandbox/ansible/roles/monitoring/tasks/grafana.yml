@@ -25,3 +25,15 @@
     state: present
     update_cache: yes
     cache_valid_time: "{{ aptcachetime }}"
+
+- name: Enabling and starting Grafana
+  ansible.builtin.systemd:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: "Allow all access to tcp port {{ grafana.port }}"
+  ufw:
+    rule: allow
+    port: "{{ grafana.port }}"
+    proto: tcp
