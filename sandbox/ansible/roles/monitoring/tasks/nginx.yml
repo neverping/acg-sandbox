@@ -18,10 +18,10 @@
     enabled: yes
     daemon_reload: true
 
-- name: Placing nginx VHost file
+- name: Placing nginx VHost file on sites-enabled
   ansible.builtin.template:
     src: monitoring.j2
-    dest: /etc/nginx/sites-available/monitoring
+    dest: /etc/nginx/sites-enabled/monitoring
     owner: root 
     group: root
     mode: 0644
