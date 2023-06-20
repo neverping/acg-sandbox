@@ -11,7 +11,7 @@
     port: 80
     proto: tcp
 
-  - name: Enabling and starting nginx
+- name: Enabling and starting nginx
   ansible.builtin.systemd:
     name: nginx.service
     state: started
