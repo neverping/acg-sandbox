@@ -1,8 +1,8 @@
 ---
 - name: Add group "{{ prometheus.user_settings.group }}", with GID as {{ prometheus.user_settings.gid }}, as a system group"  
   ansible.builtin.group:
-    name: {{ prometheus.user_settings.group }}
-    gid: {{ prometheus.user_settings.gid }}
+    name: "{{ prometheus.user_settings.group }}"
+    gid: "{{ prometheus.user_settings.gid }}"
     system: true
 
 - name: Add user "{{ prometheus.user_settings.user }}", with UID/Group as {{ prometheus.user_settings.uid }}/{{ prometheus.user_settings.group }} as system user"  
