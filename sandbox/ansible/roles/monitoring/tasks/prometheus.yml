@@ -10,7 +10,8 @@
 
 - name: "Assign Prometheus {{ prometheus.version }} release as current release"
   ansible.builtin.file:
-    src: "/opt/prometheus-{{ prometheus.version }}.linux-{{ deb_architecture[ansible_architecture] }}"
+    #src: "/opt/prometheus-{{ prometheus.version }}.linux-{{ deb_architecture[ansible_architecture] }}"
+    src: "{{ prometheus_release_dir }}"
     dest: "{{ prometheus.dir_prefix }}"
     owner: "{{ user_owner }}"
     group: "{{ group_owner }}"

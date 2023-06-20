@@ -1,14 +1,17 @@
 ---
 
 ## TODO: The new LTS release will be 2.45.
-## at the current moment, we just have the RC.
-## Use the LTS from above when it's released.
+## At the current stage, it's the RC.
+## Use the LTS release without "rc" once it goes out.
 prometheus:
   version: 2.45.0-rc.0
   dir_prefix: /opt/prometheus
 
-## Used on apt repo setup and downloading artifacts from GitHub.
+## Used by GitHub releases.
 deb_architecture: {
   "aarch64": "arm64",
   "x86_64": "amd64"
 }
+
+# 
+prometheus_release_dir: "/opt/prometheus-{{ prometheus.version }}.linux-{{ deb_architecture[ansible_architecture] }}"
