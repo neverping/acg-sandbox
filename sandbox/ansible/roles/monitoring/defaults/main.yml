@@ -16,6 +16,12 @@ prometheus:
     uid: 1080
     gid: 1080
 
+apt_trusted_gpg_store_dir: /etc/apt/trusted.gpg.d
+
+grafana:
+  gpg_key: "{{ apt_trusted_gpg_store_dir }}/grafana.gpg"
+  version: 55.22
+
 ## Used by GitHub releases.
 deb_architecture: {
   "aarch64": "arm64",

@@ -1,0 +1,27 @@
+---
+# HINT: curl -s https://packages.grafana.com/gpg.key | gpg --armor
+# pub   rsa3072 2023-01-06 [SC] [expires: 2025-01-05]
+#       0E22EB88E39E12277A7760AE9E439B102CF3C0C6
+# uid           Grafana Labs <engineering@grafana.com>
+# sub   rsa3072 2023-01-06 [E] [expires: 2025-01-05]
+
+- name: Installing Grafana keyring
+  ansible.builtin.apt_key:
+    state: present
+    id: "0E22EB88E39E12277A7760AE9E439B102CF3C0C6"
+    url: https://packages.grafana.com/gpg.key
+    keyring: "{{ grafana.gpg_key }}"
+
+- name: Add Grafana repository
+  ansible.builtin.apt_repository: 
+    repo: "deb [arch={{ deb_architecture[ansible_architecture] }} signed-by={{ grafana.gpg_key }}] https://packages.grafana.com/oss/deb stable main"
+    state: present
+    update_cache: yes
+    filename: "grafana"
+
+- name: "Install Grafana on version {{ grafana.version }}"
+  apt: 
+    pkg: ["grafana"]
+    state: "{{ grafana.version }}"
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime }}"
