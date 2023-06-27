@@ -3,30 +3,13 @@ map $http_upgrade $connection_upgrade {
 	'' close;
 }
 
+# Grafana
 server {
   server_name {{ inventory_hostname }};
 
   root /tmp;
   index index.html index.htm index.nginx-debian.html;
 
-  # BEGIN: Prometheus
-  location ~ ^/(graph|-/ready|favicon.ico|alerts|config|status|tsdb-status|flags|config|rules|targets|service-discovery) {
-    proxy_set_header Host $http_host;
-    proxy_pass http://127.0.0.1:{{ prometheus.port }};
-  }
-
-  location /api/v1 {
-    proxy_set_header Host $http_host;
-    proxy_pass http://127.0.0.1:{{ prometheus.port }};
-  }
-
-  location ~ ^/static/(js|css)/ {
-    proxy_set_header Host $http_host;
-    proxy_pass http://127.0.0.1:{{ prometheus.port }};
-  }
-  # END: Prometheus
-
-  # BEGIN: Grafana
   location /api/live {
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
@@ -35,15 +18,23 @@ server {
     proxy_pass http://127.0.0.1:{{ grafana.port }};
   }
 
-  location /public {
-    proxy_set_header Host $http_host;
-    proxy_pass http://127.0.0.1:{{ grafana.port }};
-  }
-
-  # Grafana MUST be the default route.
   location / {
     proxy_set_header Host $http_host;
     proxy_pass http://127.0.0.1:{{ grafana.port }};
   }
-  # END: Grafana
+}
+
+# Prometheus
+server {
+  # HINT: Secondary DNS.
+  server_name 440a1038311d.mylabserver.com;
+
+  root /tmp;
+
+  index index.html index.htm index.nginx-debian.html;
+
+  location / {
+    proxy_set_header Host $http_host;
+    proxy_pass http://127.0.0.1:{{ prometheus.port }};
+  }
 }

@@ -19,10 +19,12 @@
   ansible.builtin.unarchive:
     src: "https://github.com/prometheus/alertmanager/releases/download/v{{ alertmanager.version }}/alertmanager-{{ alertmanager.version }}.linux-{{ deb_architecture[ansible_architecture] }}.tar.gz"
     dest: "/opt/"
+    creates: "/opt/alertmanager-{{ alertmanager.version }}.linux-{{ deb_architecture[ansible_architecture] }}"
     owner: "{{ alertmanager.user_settings.user }}"
     group: "{{ alertmanager.user_settings.group }}"
     mode: 0755
     remote_src: yes
+    notify: "restart alertmanager"
 
 - name: "Assign AlertManager {{ alertmanager.version }} release as current AlertManager"
   ansible.builtin.file:

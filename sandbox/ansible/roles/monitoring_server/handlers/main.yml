@@ -40,3 +40,11 @@
     state: reloaded
     daemon_reload: yes
     enabled: yes
+
+- name: Systemd restart alertmanager
+  listen: "restart alertmanager"
+  ansible.builtin.systemd:
+    name: alertmanager
+    state: restarted
+    daemon_reload: yes
+    enabled: yes

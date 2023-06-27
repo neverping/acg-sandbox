@@ -20,10 +20,13 @@
   ansible.builtin.unarchive:
     src: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus.version }}/prometheus-{{ prometheus.version }}.linux-{{ deb_architecture[ansible_architecture] }}.tar.gz"
     dest: "/opt/"
+    creates: "/opt/prometheus-{{ prometheus.version }}.linux-{{ deb_architecture[ansible_architecture] }}"
     owner: "{{ prometheus.user_settings.user }}"
     group: "{{ prometheus.user_settings.group }}"
     mode: 0755
     remote_src: yes
+    notify: "restart prometheus"
+
 
 - name: "Assign Prometheus {{ prometheus.version }} release as current Prometheus"
   ansible.builtin.file:

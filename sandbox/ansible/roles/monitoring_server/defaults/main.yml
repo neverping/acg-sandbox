@@ -1,10 +1,7 @@
 ---
 
-## TODO: The new LTS release will be 2.45.
-## At the current stage, it's the RC.
-## Use the LTS release without "rc" once it goes out.
 prometheus:
-  version: 2.45.0-rc.0
+  version: 2.45.0
   working_dir: /opt/prometheus
   var_dir: /var/lib/prometheus
   bin_dir: /usr/local/bin
@@ -38,7 +35,7 @@ apt_trusted_gpg_store_dir: /etc/apt/trusted.gpg.d
 
 grafana:
   gpg_key: "{{ apt_trusted_gpg_store_dir }}/grafana.gpg"
-  version: 10.0.0
+  version: 10.0.1
   port: 3000
 
 ## Used by GitHub releases.
