@@ -13,13 +13,13 @@ docker_gpg_key: "{{ apt_trusted_gpg_store_dir }}/docker.gpg"
 docker:
   start: true
   service_enabled: yes
-  docker_compose_version: 2.13.0
+  docker_compose_version: 2.22.0
 
 ## Kubernetes
 kubernetes_gpg_key: "{{ apt_trusted_gpg_store_dir }}/kubernetes.gpg"
 kubernetes:
   cli_version: latest
-  k3d_version: 5.4.6
+  k3d_version: 5.6.0
 
 ## hashicorp
 hashicorp_gpg_key: "{{ apt_trusted_gpg_store_dir }}/hashicorp.gpg"
